@@ -23,16 +23,19 @@ if extra_vertex:
     S = COLOURS + ['v']
 else:
     S = COLOURS
-
 # List of triples (subsets of size 3) from S.
 T = sorted(list(combinations(S, 3)))
-
 # Dictionary whose keys are triples from S and whose values are the colour associated with each triple (initialised to None).
 triple_dict = {tuple(sorted(t)): None for t in T}
 
-#############
-# 6 colours #
-#############
+# Output progress?
+# Print to console every time output_progress configurations have been checked. Set to False for no output.
+output_progress = False
+# output_progress = 25000
+
+###################
+# 6 colours total #
+###################
 
 # cases is a list of cases to be considered sequentially.
 # Each case is a dict whose keys are tuples of triples and whose values are the colour to which these triples should be assigned.
@@ -50,21 +53,30 @@ cases = []
 #     {(tup('GBP'), tup('BPY'), tup('PYG')) + (tup('OGY'), tup('OGP'), tup('OBY')) : 'R'}]
 
 # 2 colours
-cases += [{(tup('GBP'), tup('BPY'), tup('PYG'), tup('YGB')) : 'R',
-     (tup('ROG'), tup('ROP')) : 'B'},
-    {(tup('GBP'), tup('BPY'), tup('PYG'), tup('YGB')) : 'R',
-     (tup('GBO'),) : 'R',
-     (tup('ROY'),) : 'G'}
-     ,
-    {(tup('GBP'), tup('BPY'), tup('PYG')) : 'R',
-     (tup('ROY'), tup('ROG'), tup('ROB')) : 'P'},
-    {(tup('GBP'), tup('BPY'), tup('PYG')) : 'R',
-     (tup('ROY'), tup('ROP'), tup('ROB')) : 'G'}
+# cases += [{(tup('GBP'), tup('BPY'), tup('PYG'), tup('YGB')) : 'R',
+#      (tup('ROG'), tup('ROP')) : 'B'},
+#     {(tup('GBP'), tup('BPY'), tup('PYG'), tup('YGB')) : 'R',
+#      (tup('GBO'),) : 'R',
+#      (tup('ROY'),) : 'G'}
+#      ,
+#     {(tup('GBP'), tup('BPY'), tup('PYG')) : 'R',
+#      (tup('ROY'), tup('ROG'), tup('ROB')) : 'P'},
+#     {(tup('GBP'), tup('BPY'), tup('PYG')) : 'R',
+#      (tup('ROY'), tup('ROP'), tup('ROB')) : 'G'}
+#      ]
+
+cases += [{(tup('RGB'), tup('GBY'), tup('BYO'), tup('YOR'), tup('ORY')) : 'P'}      # This should be the only case which returns True (up to permutations)
+        #   ,
+        #   {(tup('RGB'), tup('RGY'), tup('RBY'), tup('BYO'), tup('GYO')) : 'P'},
+        #   {(tup('RGB'), tup('RGY'), tup('RBY')) : 'P'},
+        #   {(tup('RGB'), tup('RGY'), tup('RGO')) : 'P'},
+        #   {(tup('RGB'), tup('RYO'), tup('RGY'), tup('RBO')) : 'P'}
      ]
 
-#############
-# 5 colours #
-#############
+
+###################
+# 5 colours total #
+###################
 
 # Only possible case:
 # cases = [{(tup('GBY'), tup('GOY')) : 'R',
@@ -79,13 +91,9 @@ cases += [{(tup('GBP'), tup('BPY'), tup('PYG'), tup('YGB')) : 'R',
 
 # cases = [{}]
 
-################
-## Main logic ##
-################
-
-# Print to console every time output_progress configurations have been checked. Set to False for no output.
-output_progress = False
-# output_progress = 25000
+##########
+# OUTPUT #
+##########
 
 results = check_all_cases(cases, extra_vertex, triple_dict, output_progress, COLOURS, S, T)
         
