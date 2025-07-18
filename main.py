@@ -1,73 +1,12 @@
 # from itertools import combinations
 from setup_functions import *
 from checking_functions import *
-
-# Depth-first search
-def dfs(triple_dict, COLOURS, output_progress, index=0):
-    global step_counter
-    global configurations_checked_counter
-    step_counter += 1
-    if index == len(T):
-        if fewer_than_three_occurences(triple_dict, COLOURS):
-            # print('Configuration contains fewer than three occurences of some colour.')
-            return False
-        # elif exactly_five_occurences(triple_dict, COLOURS):
-        #     # print('Configuration contains exactly five occurences of some colour.')
-        #     return False
-        elif check_pair_in_four_colours(triple_dict):
-            return False
-        else:
-            return True
-    
-    # Select triple
-    t = T[index]
-
-    # Skip over selected triple if it has already been assigned a colour
-    if triple_dict[tuple(sorted(t))] is not None:
-        return dfs(triple_dict, COLOURS, output_progress, index + 1)
-
-    valid_cols = [c for c in COLOURS if c not in t]
-    for colour in valid_cols:
-        triple_dict[tuple(sorted(t))] = colour
-        valid = True
-            
-        for q in find_valid_quadruples(t, triple_dict, S):
-            if is_rainbow(triple_dict, *q):
-                valid = False
-                if output_progress:
-                    if configurations_checked_counter % output_progress == 0:
-                        print("Configurations checked: " + str(configurations_checked_counter) + ". Triples currently coloured: " + str(index) + " out of " + str(len(T)) + ".")
-                        # print('Coloured ' + str(index) + " out of " + str(len(T)) + ".")
-                configurations_checked_counter += 1
-                break
-
-        if valid:
-            if dfs(triple_dict, COLOURS, output_progress, index + 1):
-                return True
-
-        triple_dict[tuple(sorted(t))] = None  # Reset colour to None
-
-    return False # Backtrack
-
-# Main logic for checking cases
-def check_case(triple_dict, COLOURS, output_progress):
-    if dfs(triple_dict, COLOURS, output_progress):
-        print("Valid configuration found!")
-        for k in sorted(triple_dict):
-            print(f"{k}: {triple_dict[k]}")
-        print("Steps: " + str(step_counter))
-        print("Configurations checked: " + str(configurations_checked_counter))
-        return True
-    else:
-        print("No valid configuration exists.")
-        print("Steps: " + str(step_counter))
-        print("Configurations checked: " + str(configurations_checked_counter))
-        return False
+from dfs import *
+from case_checker import *
 
 #####################
 ### CONFIGURATION ###
 #####################
-
 # COLOURS is the set of colours in the graph.
 # Note that each element of COLOURS will refer to both a colour and a vertex which does not belong to the component of that colour.
 # Colours can be assigned names arbitrarily, except that a colour may not be named 'v'.
@@ -144,50 +83,11 @@ cases += [{(tup('GBP'), tup('BPY'), tup('PYG'), tup('YGB')) : 'R',
 ## Main logic ##
 ################
 
-results = []
-case_counter = 1
-step_counter = 0 # Counts number of times depth increases
-configurations_checked_counter = 0 # Counts number of times a configuration is ruled out
 # Print to console every time output_progress configurations have been checked. Set to False for no output.
 output_progress = False
 # output_progress = 25000
 
-for case in cases:
-    print('---------- CASE ' + str(case_counter) + " OF " + str(len(cases)) + " ----------")
-    case_counter += 1
-    # If extra_vertex is True, check if two triples overlapping in two vertices were assigned two different colours
-    if check_initial_overlap(case, extra_vertex):
-        results.append(("Error","N/A","N/A"))
-        reset_dict(triple_dict)
-        step_counter = 0
-        configurations_checked_counter = 0
-    # Check if a triple was assigned a colour contained in the triple
-    elif check_for_illegitimate_colours(case):
-        results.append(("Error","N/A","N/A"))
-        reset_dict(triple_dict)
-        step_counter = 0
-        configurations_checked_counter = 0
-    else:
-        for tuple_of_triples in case:
-            for triple in tuple_of_triples:
-                if 'v' in S:
-                    fill_triangle(triple_dict, triple, case[tuple_of_triples])
-                else:
-                    triple_dict[tuple(sorted(triple))] = case[tuple_of_triples]
-        # Check if there is a rainbow K_4^{(3)}
-        if check_current_configuration(triple_dict):
-            print("Initialisation error: Rainbow in initial configuration.")
-            results.append(("Error","N/A","N/A"))
-            reset_dict(triple_dict)
-            step_counter = 0
-            configurations_checked_counter = 0
-        else:
-            # Run depth-first search
-            outcome = check_case(triple_dict, COLOURS, output_progress = output_progress)
-            results.append((outcome,step_counter,configurations_checked_counter))
-            reset_dict(triple_dict)
-            step_counter = 0
-            configurations_checked_counter = 0
+results = check_all_cases(cases, extra_vertex, triple_dict, output_progress, COLOURS, S, T)
         
 print("---------- SUMMARY ---------- ")
 print("Number of colours used: " + str(len(COLOURS)))
