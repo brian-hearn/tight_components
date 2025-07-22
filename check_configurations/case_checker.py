@@ -1,5 +1,5 @@
 from dfs import *
-from checking_functions import *
+from cconf_checking_functions import *
 from setup_functions import *
 
 # Checks an individual case

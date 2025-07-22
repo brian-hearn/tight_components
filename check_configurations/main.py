@@ -1,6 +1,6 @@
 # from itertools import combinations
 from setup_functions import *
-from checking_functions import *
+from cconf_checking_functions import *
 from dfs import *
 from case_checker import *
 
@@ -33,14 +33,13 @@ triple_dict = {tuple(sorted(t)): None for t in T}
 output_progress = False
 # output_progress = 25000
 
+# cases is a list of cases to be considered sequentially.
+# Each case is a dict whose keys are tuples of triples and whose values are the colour to which these triples should be assigned.
+cases = []
+
 ###################
 # 6 colours total #
 ###################
-
-# cases is a list of cases to be considered sequentially.
-# Each case is a dict whose keys are tuples of triples and whose values are the colour to which these triples should be assigned.
-
-cases = []
 
 # 1 colour (not possible if each triple must occur at least 3 times)
 # cases += [
@@ -65,9 +64,13 @@ cases = []
 #      (tup('ROY'), tup('ROP'), tup('ROB')) : 'G'}
 #      ]
 
-cases += [{(tup('RGB'), tup('GBY'), tup('BYO'), tup('YOR'), tup('ORY')) : 'P'}      # This should be the only case which returns True (up to permutations)
-        #   ,
-        #   {(tup('RGB'), tup('RGY'), tup('RBY'), tup('BYO'), tup('GYO')) : 'P'},
+cases += [
+        # {(tup('RGB'), tup('GBY'), tup('BYO'), tup('YOR'), tup('ORY')) : 'P'}      # This should be the only case which returns True (up to permutations)
+        # ,
+        # {(tup('RGB'), tup('RGY'), tup('RBY'), tup('BYO'), tup('GYO')) : 'P'},
+        # {(tup('RGB'), tup('BYR'), tup('YRG'), tup('RGO'), tup('BYO')) : 'P'},
+        {(tup('RGB'), tup('RGY'), tup('GBO'), tup('GYO')) : 'P'}
+        # ,
         #   {(tup('RGB'), tup('RGY'), tup('RBY')) : 'P'},
         #   {(tup('RGB'), tup('RGY'), tup('RGO')) : 'P'},
         #   {(tup('RGB'), tup('RYO'), tup('RGY'), tup('RBO')) : 'P'}
@@ -90,6 +93,13 @@ cases += [{(tup('RGB'), tup('GBY'), tup('BYO'), tup('YOR'), tup('ORY')) : 'P'}  
 #           (tup('RGY'), tup('RGO')) : 'B'}]
 
 # cases = [{}]
+
+###################
+# 7 colours total #
+###################
+
+# cases += [{(tup('RGB'), tup('GBY'), tup('BYR'), tup('YRG'), tup('RGO'), tup('RBO'), tup('RYO'), tup('GBO'), tup('GYO'), tup('BYO')) : 'P'}
+#      ]
 
 ##########
 # OUTPUT #
