@@ -11,6 +11,8 @@ from case_checker import *
 # Note that each element of COLOURS will refer to both a colour and a vertex which does not belong to the component of that colour.
 # Colours can be assigned names arbitrarily, except that a colour may not be named 'v'.
 COLOURS = ['R', 'G', 'B', 'Y', 'O', 'P']
+
+# Specify maximum allowed of each colour
 MAX_COLOURS = {colour: None for colour in COLOURS}
 MAX_COLOURS['P'] = 5
 
