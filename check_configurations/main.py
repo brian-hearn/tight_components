@@ -12,9 +12,13 @@ from case_checker import *
 # Colours can be assigned names arbitrarily, except that a colour may not be named 'v'.
 COLOURS = ['R', 'G', 'B', 'Y', 'O', 'P']
 
-# Specify maximum allowed of each colour
+# Specify MINIMUM REQUIRED for each colour
+MIN_COLOURS = {colour: 3 for colour in COLOURS}
+
+# Specify MAXIMUM ALLOWED for each colour
 MAX_COLOURS = {colour: None for colour in COLOURS}
 MAX_COLOURS['P'] = 5
+
 
 # COLOURS = ['R', 'G', 'B', 'Y', 'O']
 
@@ -70,10 +74,10 @@ cases = []
 #      (tup('ROY'), tup('ROP'), tup('ROB')) : 'G'}
 #      ]
 
-cases += [{(tup('RGB'), tup('GBY'), tup('BYO'), tup('YOR')) : 'P'}
+cases += [{(tup('RGB'), tup('GBY'), tup('BYO'), tup('YOR')) : 'P'},
         #   {(tup('RGB'), tup('GBY'), tup('BYO'), tup('YOR'), tup('ORY')) : 'P'}      # This should be the only case which returns True (up to permutations)
         # ,
-        # {(tup('RGB'), tup('RGY'), tup('RBY'), tup('BYO'), tup('GYO')) : 'P'},
+        {(tup('RGB'), tup('RGY'), tup('RBY'), tup('BYO'), tup('GYO')) : 'P'}
         # {(tup('RGB'), tup('BYR'), tup('YRG'), tup('RGO'), tup('BYO')) : 'P'},
         # {(tup('RGB'), tup('RGY'), tup('GBO'), tup('GYO')) : 'P'}
         # ,
@@ -111,7 +115,7 @@ cases += [{(tup('RGB'), tup('GBY'), tup('BYO'), tup('YOR')) : 'P'}
 # OUTPUT #
 ##########
 
-results = check_all_cases(cases, extra_vertex, triple_dict, output_progress, COLOURS, MAX_COLOURS, S, T)
+results = check_all_cases(cases, extra_vertex, triple_dict, output_progress, COLOURS, MIN_COLOURS, MAX_COLOURS, S, T)
         
 print("---------- SUMMARY ---------- ")
 print("Number of colours used: " + str(len(COLOURS)))

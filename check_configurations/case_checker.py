@@ -3,8 +3,8 @@ from cconf_checking_functions import *
 from setup_functions import *
 
 # Checks an individual case
-def check_case(triple_dict, COLOURS, output_progress, MAX_COLOURS, S, T, counters):
-    outcome = dfs(triple_dict, COLOURS, output_progress, MAX_COLOURS, S, T, counters)
+def check_case(triple_dict, COLOURS, output_progress, MIN_COLOURS, MAX_COLOURS, S, T, counters):
+    outcome = dfs(triple_dict, COLOURS, output_progress, MIN_COLOURS, MAX_COLOURS, S, T, counters)
     if outcome['result']:
         print("Valid configuration found!")
         for k in sorted(triple_dict):
@@ -18,7 +18,7 @@ def check_case(triple_dict, COLOURS, output_progress, MAX_COLOURS, S, T, counter
         print("Configurations checked: " + str(outcome["counters"]["configurations_checked"]))
         return outcome
 
-def check_all_cases(cases, extra_vertex, triple_dict, output_progress, COLOURS, MAX_COLOURS, S, T):
+def check_all_cases(cases, extra_vertex, triple_dict, output_progress, COLOURS, MIN_COLOURS, MAX_COLOURS, S, T):
     case_counter = 1
     results = []
     for case in cases:
@@ -46,7 +46,7 @@ def check_all_cases(cases, extra_vertex, triple_dict, output_progress, COLOURS, 
                 reset_dict(triple_dict)
             else:
                 # Run depth-first search
-                outcome = check_case(triple_dict, COLOURS, output_progress = output_progress, MAX_COLOURS = MAX_COLOURS, S = S, T = T, counters = counters)
+                outcome = check_case(triple_dict, COLOURS, output_progress = output_progress, MIN_COLOURS = MIN_COLOURS, MAX_COLOURS = MAX_COLOURS, S = S, T = T, counters = counters)
                 results.append((outcome["result"],outcome["counters"]["steps"],outcome["counters"]["configurations_checked"]))
                 reset_dict(triple_dict)
     return results

@@ -3,7 +3,7 @@ from cconf_checking_functions import *
 counters = None
 
 # Depth-first search
-def dfs(triple_dict, COLOURS, output_progress, MAX_COLOURS, S, T, counters, index=0):
+def dfs(triple_dict, COLOURS, output_progress, MIN_COLOURS, MAX_COLOURS, S, T, counters, index=0):
     # Set up counters
     # steps counts the number of times depth increases
     # configurations_checked counts the number of times a configuration is ruled out
@@ -12,9 +12,14 @@ def dfs(triple_dict, COLOURS, output_progress, MAX_COLOURS, S, T, counters, inde
 
     counters['steps'] += 1
     if index == len(T):
-        if fewer_than_three_occurences(triple_dict, COLOURS):
-            # print('Configuration contains fewer than three occurences of some colour.')
-            return {'result' : False, 'counters' : counters}
+        # If all triples have been coloured, check if any colours appear fewer than the minimum required
+        if any(
+            MIN_COLOURS[colour] is not None and list(triple_dict.values()).count(colour) < MIN_COLOURS[colour]
+            for colour in COLOURS
+            ):
+                return {'result' : False, 'counters' : counters}
+        # if fewer_than_three_occurences(triple_dict, COLOURS):
+        #     # print('Configuration contains fewer than three occurences of some colour.')
         # elif exactly_five_occurences(triple_dict, COLOURS):
         #     # print('Configuration contains exactly five occurences of some colour.')
         #     return False
@@ -28,7 +33,7 @@ def dfs(triple_dict, COLOURS, output_progress, MAX_COLOURS, S, T, counters, inde
 
     # Skip over selected triple if it has already been assigned a colour
     if triple_dict[tuple(sorted(t))] is not None:
-        return dfs(triple_dict, COLOURS, output_progress, MAX_COLOURS, S, T, counters, index + 1)
+        return dfs(triple_dict, COLOURS, output_progress, MIN_COLOURS, MAX_COLOURS, S, T, counters, index + 1)
 
     valid_cols = [c for c in COLOURS if c not in t]
     for colour in valid_cols:
@@ -49,7 +54,7 @@ def dfs(triple_dict, COLOURS, output_progress, MAX_COLOURS, S, T, counters, inde
                     break
 
             if valid:
-                if dfs(triple_dict, COLOURS, output_progress, MAX_COLOURS, S, T, counters, index + 1)['result']:
+                if dfs(triple_dict, COLOURS, output_progress, MIN_COLOURS, MAX_COLOURS, S, T, counters, index + 1)['result']:
                     return {'result' : True, 'counters' : counters}
 
             triple_dict[tuple(sorted(t))] = None  # Reset colour to None
