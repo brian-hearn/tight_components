@@ -26,6 +26,7 @@ def generate_spanning_families_with_triplets(n, max):
     unique_canonicals = dict()
 
     for r in range(1, len(triplets) + 1):
+        print('Checking size ' + str(r))
         if r <= max:
             for family in combinations(triplets, r):
                 if not is_spanning(family, ground_set):
