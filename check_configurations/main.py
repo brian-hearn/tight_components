@@ -10,14 +10,14 @@ from case_checker import *
 # COLOURS is the set of colours in the graph.
 # Note that each element of COLOURS will refer to both a colour and a vertex which does not belong to the component of that colour.
 # Colours can be assigned names arbitrarily, except that a colour may not be named 'v'.
-COLOURS = ['R', 'G', 'B', 'Y', 'O', 'P']
+COLOURS = ['R', 'G', 'B', 'Y', 'O', 'P', 'W']
 
 # Specify MINIMUM REQUIRED for each colour
-MIN_COLOURS = {colour: 3 for colour in COLOURS}
+MIN_COLOURS = {colour: 0 for colour in COLOURS}
 
 # Specify MAXIMUM ALLOWED for each colour
 MAX_COLOURS = {colour: None for colour in COLOURS}
-MAX_COLOURS['P'] = 5
+MAX_COLOURS['W'] = 2
 
 
 # COLOURS = ['R', 'G', 'B', 'Y', 'O']
@@ -74,17 +74,17 @@ cases = []
 #      (tup('ROY'), tup('ROP'), tup('ROB')) : 'G'}
 #      ]
 
-cases += [{(tup('RGB'), tup('GBY'), tup('BYO'), tup('YOR')) : 'P'},
-        #   {(tup('RGB'), tup('GBY'), tup('BYO'), tup('YOR'), tup('ORY')) : 'P'}      # This should be the only case which returns True (up to permutations)
-        # ,
-        {(tup('RGB'), tup('RGY'), tup('RBY'), tup('BYO'), tup('GYO')) : 'P'}
-        # {(tup('RGB'), tup('BYR'), tup('YRG'), tup('RGO'), tup('BYO')) : 'P'},
-        # {(tup('RGB'), tup('RGY'), tup('GBO'), tup('GYO')) : 'P'}
-        # ,
-        #   {(tup('RGB'), tup('RGY'), tup('RBY')) : 'P'},
-        #   {(tup('RGB'), tup('RGY'), tup('RGO')) : 'P'},
-        #   {(tup('RGB'), tup('RYO'), tup('RGY'), tup('RBO')) : 'P'}
-     ]
+# cases += [{(tup('RGB'), tup('GBY'), tup('BYO'), tup('YOR')) : 'P'},
+#         #   {(tup('RGB'), tup('GBY'), tup('BYO'), tup('YOR'), tup('ORY')) : 'P'}      # This should be the only case which returns True (up to permutations)
+#         # ,
+#         {(tup('RGB'), tup('RGY'), tup('RBY'), tup('BYO'), tup('GYO')) : 'P'}
+#         # {(tup('RGB'), tup('BYR'), tup('YRG'), tup('RGO'), tup('BYO')) : 'P'},
+#         # {(tup('RGB'), tup('RGY'), tup('GBO'), tup('GYO')) : 'P'}
+#         # ,
+#         #   {(tup('RGB'), tup('RGY'), tup('RBY')) : 'P'},
+#         #   {(tup('RGB'), tup('RGY'), tup('RGO')) : 'P'},
+#         #   {(tup('RGB'), tup('RYO'), tup('RGY'), tup('RBO')) : 'P'}
+#      ]
 
 
 ###################
@@ -108,8 +108,10 @@ cases += [{(tup('RGB'), tup('GBY'), tup('BYO'), tup('YOR')) : 'P'},
 # 7 colours total #
 ###################
 
-# cases += [{(tup('RGB'), tup('GBY'), tup('BYR'), tup('YRG'), tup('RGO'), tup('RBO'), tup('RYO'), tup('GBO'), tup('GYO'), tup('BYO')) : 'P'}
-#      ]
+cases += [
+    # {(tup('RGB'), tup('GBY'), tup('BYR'), tup('YRG'), tup('RGO'), tup('RBO'), tup('RYO'), tup('GBO'), tup('GYO'), tup('BYO')) : 'P'},
+          {(tup('RGB'), tup('YOP')) : 'W'}
+     ]
 
 ##########
 # OUTPUT #
