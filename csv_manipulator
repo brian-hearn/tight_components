@@ -4,12 +4,15 @@ input_file = '6vertexconfigs.csv'
 df = pd.read_csv(input_file)
 
 df['Pairs = 2x'] = df.iloc[:, 2] - df.iloc[:, 3]
+df['Pairs filled'] = df.iloc[:, 3] + (df.iloc[:, 2] - df.iloc[:, 3])/2
 
 cols = df.columns.tolist()
-reordered = [cols[0], cols[1], cols[2], 'Pairs = 2x', cols[3], cols[4]]
+# reordered = [cols[0], cols[2], 'Pairs = 2x', cols[3], cols[4], cols[1]]
+reordered = [cols[0], 'Pairs filled', cols[4], cols[2], 'Pairs = 2x', cols[3], cols[1]]
 df = df[reordered]
 
-df = df.drop(columns=[cols[1], cols[2]])
+# df = df.drop(columns=[cols[1], cols[2]])
+# df = df.drop(columns=[cols[2]])
 
 output_file = 'output.csv'
 df.to_csv(output_file, index=False)
