@@ -4,6 +4,7 @@
 from collections import defaultdict
 from configuration_finder import *
 import pandas as pd
+import os
 
 # number of vertices
 n = 6
@@ -16,7 +17,7 @@ count_triple_repeats = True
 print_results = True
 # output as .csv?
 output_as_csv = True
-csv_name = "analysis"
+csv_name = "7col_fullconfigtable"
 
 families = generate_spanning_families_with_triplets(n, max)
 grouped = defaultdict(list)
@@ -69,7 +70,7 @@ if output_as_csv:
     columns.append("Quadruples with ≥2 Triples")
     df = df[columns]
 
-    # # Display dataframe
-    # print(df.to_string(index=False))
-
-    df.to_csv(csv_name + ".csv", index=False)
+    # Save CSV in the script directory
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    output_path = os.path.join(script_dir, csv_name + ".csv")
+    df.to_csv(output_path, index=False)

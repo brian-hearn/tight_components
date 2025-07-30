@@ -2,6 +2,7 @@ from find_combinations import *
 from find_partitions import *
 import pandas as pd
 import os
+import csv
 
 script_dir = os.path.dirname(os.path.abspath(__file__))  # folder where the script lives
 csv_path = os.path.join(script_dir, '7col_smallconfigtable.csv')
@@ -29,3 +30,13 @@ for i in range(250):
 print_constraints(df, constraints)
 print('Number of partitions checked: ' + str(len(cleaned_partitions)))
 print('Number of valid partitions: ' + str(len(valid_partitions)))
+
+# Get directory of this script
+script_dir = os.path.dirname(os.path.abspath(__file__))
+output_path = os.path.join(script_dir, '7col_valid_partitions.csv')
+
+with open(output_path, 'w', newline='') as file:
+    writer = csv.writer(file)
+    writer.writerows(valid_partitions)
+
+print(f"CSV saved to: {output_path}")
