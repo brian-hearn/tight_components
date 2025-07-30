@@ -1,62 +1,44 @@
+from find_combinations import *
+from find_partitions import *
 import pandas as pd
-import numpy as np
-import itertools
+import os
+from dominator import *
 
-def find_valid_combinations(df, k, constraints):
-    """
-    Efficiently finds all combinations of exactly k rows such that each specified column
-    satisfies a 'min' or 'exact' constraint on the sum.
+# df = pd.DataFrame({
+#     'size': [1, 1, 2, 2],
+#     'param1': [3, 4, 2, 5],
+#     'param2': [1, 2, 3, 1]
+# })
 
-    Parameters:
-        df (pd.DataFrame): The DataFrame to process.
-        k (int): Number of rows to choose.
-        constraints (dict): { column_name: ('min' or 'exact', value), ... }
+sizes_list = [20,5,2,2,2,2,2]
 
-    Returns:
-        list of tuple: Each tuple contains the DataFrame indices of a valid combination.
-    """
-    columns = list(constraints.keys())
-    data = df[columns].to_numpy()  # shape: (n_rows, n_columns)
-    index_array = df.index.to_numpy()
-    col_indices = {col: i for i, col in enumerate(columns)}
-    valid_combos = []
+constraints = [
+    ['Pairs filled', 21, 'min'],
+    ['Quadruples with ≥2 Triples', 35, 'min']
+]
 
-    for combo in itertools.combinations(range(len(df)), k):
-        print(combo)
-        rows = data[list(combo)]               # shape: (k, n_columns)
-        col_sums = rows.sum(axis=0)            # shape: (n_columns,)
+script_dir = os.path.dirname(os.path.abspath(__file__))  # folder where the script lives
+csv_path = os.path.join(script_dir, 'myoutput.csv')
+df = pd.read_csv(csv_path)
+# print(df.head())
 
-        # Check all constraints
-        if all(
-            (typ == 'min' and col_sums[col_indices[col]] >= val) or
-            (typ == 'exact' and col_sums[col_indices[col]] == val)
-            for col, (typ, val) in constraints.items()
-        ):
-            valid_combos.append(tuple(index_array[i] for i in combo))
+small_df = remove_dominated_rows(df)
+print(len(df))
+print(len(small_df))
 
-    return valid_combos
+partitions = find_partitions(small_df, sizes_used=7, total=35)
+cleaned_partitions = [tuple(int(x) for x in combo) for combo in partitions]
 
-input_file = 'output.csv'
-df = pd.read_csv(input_file)
+valid_partitions = []
+# for i in range(len(cleaned_partitions)):
+for i in range(250):
+    print('Checking partition ' + str(i) + ' of ' + str(len(cleaned_partitions)) + '.')
+    valid_combinations = find_valid_combinations(small_df, cleaned_partitions[i], constraints)
+    cleaned_output = [tuple(int(x) for x in combo) for combo in valid_combinations]
+    if cleaned_output:
+        valid_partitions.append(cleaned_partitions[i])
+    print(cleaned_output)
 
-# # Example dataframe
-# data = {
-#     'A': [1, 2, 3, 4],
-#     'B': [5, 1, 2, 3],
-#     'C': [10, 10, 10, 10],  # Irrelevant
-# }
-# df = pd.DataFrame(data)
-
-# Constraints:
-# - Column A must sum exactly to 5
-# - Column B must be at most 6
-constraints = {
-    'Family Size': ('exact', 35),
-    'Pairs filled': ('min', 21),
-    'Quadruples with ≥2 Triples': ('min', 35)
-}
-# Find all valid 2-row combinations
-valid_combos = find_valid_combinations(df, k=2, constraints=constraints)
-
-print("Valid combinations (row indices):", valid_combos)
-
+print_constraints(small_df, constraints)
+print('Number of partitions checked: ' + str(len(cleaned_partitions)))
+print('Number of valid partitions: ' + str(len(valid_partitions)))

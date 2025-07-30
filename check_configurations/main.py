@@ -17,8 +17,9 @@ MIN_COLOURS = {colour: 0 for colour in COLOURS}
 
 # Specify MAXIMUM ALLOWED for each colour
 MAX_COLOURS = {colour: None for colour in COLOURS}
-MAX_COLOURS['W'] = 2
-
+MAX_COLOURS['R'] = 2
+MAX_COLOURS['G'] = 2
+MAX_COLOURS['B'] = 2
 
 # COLOURS = ['R', 'G', 'B', 'Y', 'O']
 
@@ -40,8 +41,8 @@ triple_dict = {tuple(sorted(t)): None for t in T}
 
 # Output progress?
 # Print to console every time output_progress configurations have been checked. Set to False for no output.
-output_progress = False
-# output_progress = 25000
+output_progress = True
+output_progress = 25000
 
 # cases is a list of cases to be considered sequentially.
 # Each case is a dict whose keys are tuples of triples and whose values are the colour to which these triples should be assigned.
@@ -110,7 +111,16 @@ cases = []
 
 cases += [
     # {(tup('RGB'), tup('GBY'), tup('BYR'), tup('YRG'), tup('RGO'), tup('RBO'), tup('RYO'), tup('GBO'), tup('GYO'), tup('BYO')) : 'P'},
-          {(tup('RGB'), tup('YOP')) : 'W'}
+        #   {(tup('GBY'), tup('OPW')) : 'R',
+        #    (tup('RWP'), tup('BOY')) : 'G'}  # No valid configurations in 7 colour case (took several hours and >0.93 billion configurations checked)
+        #    {(tup('GBY'), tup('OPW')) : 'R',
+        #    (tup('RWB'), tup('POY')) : 'G'}  # Case 2
+           {(tup('GWB'), tup('YOP')) : 'R',
+           (tup('RWY'), tup('BOP')) : 'G',
+           (tup('RGO'), tup('YWP')) : 'B'},   # (Case 2 subcase 1)
+           {(tup('GWB'), tup('YOP')) : 'R',
+           (tup('RWY'), tup('BOP')) : 'G',
+           (tup('ROW'), tup('GYP')) : 'B'}   # (Case 2 subcase 2) 
      ]
 
 ##########
