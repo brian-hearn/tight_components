@@ -1,5 +1,5 @@
 import os
-from dominator import *
+from removal_function import *
 
 script_dir = os.path.dirname(os.path.abspath(__file__))  # folder where the script lives
 csv_path = os.path.join(script_dir, '7col_fullconfigtable.csv')
