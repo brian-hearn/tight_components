@@ -18,7 +18,7 @@ partitions = [[5,5,5,5,5]]
 valid_partitions = []
 # for i in range(len(cleaned_partitions)):
 for i in range(len(partitions)):
-    print('Checking partition ' + str(i) + ' of ' + str(len(partitions)) + '.')
+    print('Checking partition ' + str(i+1) + ' of ' + str(len(partitions)) + '.')
     valid_combinations = find_valid_combinations(df, partitions[i], constraints)
     cleaned_output = [tuple(int(x) for x in combo) for combo in valid_combinations]
     if cleaned_output:

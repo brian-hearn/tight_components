@@ -19,8 +19,8 @@ cleaned_partitions = [tuple(int(x) for x in combo) for combo in partitions]
 
 valid_partitions = []
 # for i in range(len(cleaned_partitions)):
-for i in range(250):
-    print('Checking partition ' + str(i) + ' of ' + str(len(cleaned_partitions)) + '.')
+for i in range(len(cleaned_partitions)):
+    print('Checking partition ' + str(i+1) + ' of ' + str(len(cleaned_partitions)) + '.')
     valid_combinations = find_valid_combinations(df, cleaned_partitions[i], constraints)
     cleaned_output = [tuple(int(x) for x in combo) for combo in valid_combinations]
     if cleaned_output:
