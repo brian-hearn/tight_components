@@ -30,7 +30,9 @@ def adjust_columns_by_family_size(df, columns_with_ratios):
         if col not in df.columns:
             raise ValueError(f"Column '{col}' not found in DataFrame.")
         df[col] = round(df[col] - df['Family Size'] * ratio,3)
-
+    
+    df['Family Size'] -= 5
+    
     columns_to_keep = []
     columns_to_keep.append('Family Size')
     columns_to_keep.extend(columns_with_ratios.keys())
